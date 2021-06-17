@@ -1,0 +1,70 @@
+# base-image for node on any machine using a template variable,
+# see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/#dockerfile-templates
+# and about balena base images here: https://www.balena.io/docs/reference/base-images/base-images/
+# FROM balenalib/%%BALENA_MACHINE_NAME%%-node:10-stretch-run
+FROM balenalib/%%BALENA_MACHINE_NAME%%-ubuntu-node:10.18-bionic-run
+
+# use `install_packages` if you need to install dependencies,
+# for instance if you need git, just uncomment the line below.
+RUN apt-get update
+RUN install_packages curl git apt-utils jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3 nfs-common vim tzdata cifs-utils
+
+# # Defines our working directory in container
+WORKDIR /usr/src/app
+RUN mkdir -p ./ca 
+RUN mkdir -p ./plots
+RUN mount -t cifs -o user=ubuntu,pass=6hkcGdVe rw //192.168.1.157/chia/ca ./ca
+# CMD mount.cifs //192.168.1.157/chia/ca ./ca -o user=ubuntu,pass=6hkcGdVe
+# CMD mount.cifs //192.168.1.157/usbshare2 ./plots -o user=ubuntu,pass=6hkcGdVe
+
+# # Copies the package.json first for better cache on later pushes
+COPY package*.json ./
+
+# # This install npm dependencies on the balena build server,
+# # making sure to clean up the artifacts it creates in order to reduce the image size.
+RUN JOBS=MAX npm install --production --unsafe-perm && npm cache verify && rm -rf /tmp/*
+
+VOLUME "./ca:/ca"
+VOLUME "./plots:/plots"
+
+EXPOSE 8555
+EXPOSE 8444
+
+ENV plots_dir="/plots"
+ENV keys="copy"
+ENV ca="/ca"
+# ENV keys="copy"
+ENV harvester="true"
+ENV farmer="false"
+ENV plots_dir="/plots"
+ENV farmer_address="192.168.1.106"
+ENV farmer_port="8447"
+ENV testnet="false"
+ENV full_node_port="null"
+ENV TZ="America/New York"
+ARG BRANCH
+
+# RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN dpkg-reconfigure -f noninteractive tzdata
+
+RUN echo "cloning ${BRANCH}"
+CMD git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
+&& cd chia-blockchain \
+&& git submodule update --init mozilla-ca \
+&& chmod +x install.sh \
+&& /usr/bin/sh ./install.sh
+
+ENV PATH=/chia-blockchain/venv/bin/:$PATH
+WORKDIR /chia-blockchain
+ADD ./entrypoint.sh entrypoint.sh
+
+ENTRYPOINT ["bash", "./entrypoint.sh"]
+# # This will copy all files in our root to the working directory in the container
+COPY . ./
+
+# # Enable udevd so that plugged dynamic hardware devices show up in our container.
+ENV UDEV=1
+
+# # server.js will run when container starts up on the device
+CMD ["npm", "start"]
+
