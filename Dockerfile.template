@@ -27,8 +27,8 @@ VOLUME "/usr/src/ap/ca:/ca"
 EXPOSE 8555
 EXPOSE 8444
 
-ENV keys="/ca"
-# ENV ca="/usr/src/ap/chia/ca"
+ENV keys="copy"
+ENV ca="/ca"
 # ENV keys="copy"
 ENV harvester="true"
 ENV farmer="false"
