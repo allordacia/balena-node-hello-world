@@ -6,10 +6,10 @@ FROM balenalib/raspberrypi4-64-ubuntu-node:18.04-bionic-build as build
 
 # use `install_packages` if you need to install dependencies,
 # for instance if you need git, just uncomment the line below.
-# RUN install_packages git
+RUN install_packages git
 
 # # Defines our working directory in container
-# WORKDIR /usr/src/app
+WORKDIR /usr/src/app
 
 # # Copies the package.json first for better cache on later pushes
 # COPY package*.json ./
