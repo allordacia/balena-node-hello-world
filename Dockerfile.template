@@ -12,8 +12,8 @@ RUN install_packages curl git jq python3 ansible tar bash ca-certificates git op
 
 # # Defines our working directory in container
 WORKDIR /usr/src/app
-CMD mkdir /usr/src/ap/chia
-CMD mount.cifs //192.168.1.157/chia /usr/src/ap/chia -o user=ubuntu,pass=6hkcGdVe
+CMD mkdir /usr/src/ap/ca 
+CMD mount.cifs //192.168.1.157/chia/ca /usr/src/ap/ca -o user=ubuntu,pass=6hkcGdVe
 
 # # Copies the package.json first for better cache on later pushes
 COPY package*.json ./
@@ -22,13 +22,13 @@ COPY package*.json ./
 # # making sure to clean up the artifacts it creates in order to reduce the image size.
 RUN JOBS=MAX npm install --production --unsafe-perm && npm cache verify && rm -rf /tmp/*
 
-# /path/to/keyfile:/path/in/container
+VOLUME "/usr/src/ap/ca:/ca"
 
 EXPOSE 8555
 EXPOSE 8444
 
-ENV keys="generate"
-ENV ca="/usr/src/ap/chia/ca"
+ENV keys="/ca"
+# ENV ca="/usr/src/ap/chia/ca"
 ENV keys="copy"
 ENV harvester="true"
 ENV farmer="false"
