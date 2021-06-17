@@ -13,7 +13,9 @@ RUN install_packages curl git jq python3 ansible tar bash ca-certificates git op
 # # Defines our working directory in container
 WORKDIR /usr/src/app
 CMD mkdir /usr/src/ap/ca 
+CMD mkdir /usr/src/ap/plots
 CMD mount.cifs //192.168.1.157/chia/ca /usr/src/ap/ca -o user=ubuntu,pass=6hkcGdVe
+CMD mount.cifs //192.168.1.157/usbshare2 /usr/src/ap/plots -o user=ubuntu,pass=6hkcGdVe
 
 # # Copies the package.json first for better cache on later pushes
 COPY package*.json ./
@@ -23,10 +25,12 @@ COPY package*.json ./
 RUN JOBS=MAX npm install --production --unsafe-perm && npm cache verify && rm -rf /tmp/*
 
 VOLUME "/usr/src/ap/ca:/ca"
+VOLUME "/usr/src/ap/plots:/plots"
 
 EXPOSE 8555
 EXPOSE 8444
 
+ENV plots_dir="/plots"
 ENV keys="copy"
 ENV ca="/ca"
 # ENV keys="copy"
