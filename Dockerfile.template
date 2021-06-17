@@ -14,8 +14,9 @@ RUN install_packages curl git apt-utils jq python3 ansible tar bash ca-certifica
 WORKDIR /usr/src/app
 RUN mkdir -p ./ca 
 RUN mkdir -p ./plots
-CMD mount.cifs //192.168.1.157/chia/ca ./ca -o user=ubuntu,pass=6hkcGdVe
-CMD mount.cifs //192.168.1.157/usbshare2 ./plots -o user=ubuntu,pass=6hkcGdVe
+MOUNT -t cifs -o user=ubuntu,pass=6hkcGdVe rw //192.168.1.157/chia/ca ./ca
+# CMD mount.cifs //192.168.1.157/chia/ca ./ca -o user=ubuntu,pass=6hkcGdVe
+# CMD mount.cifs //192.168.1.157/usbshare2 ./plots -o user=ubuntu,pass=6hkcGdVe
 
 # # Copies the package.json first for better cache on later pushes
 COPY package*.json ./
