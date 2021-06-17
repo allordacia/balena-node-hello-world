@@ -18,7 +18,7 @@ COPY package*.json ./
 # # making sure to clean up the artifacts it creates in order to reduce the image size.
 RUN JOBS=MAX npm install --production --unsafe-perm && npm cache verify && rm -rf /tmp/*
 
-RUN git pull https://github.com/Chia-Network/chia-docker
+CMD git pull https://github.com/Chia-Network/chia-docker
 
 RUN docker run --name balena_chia -d ghcr.io/chia-network/chia:latest
 # # This will copy all files in our root to the working directory in the container
