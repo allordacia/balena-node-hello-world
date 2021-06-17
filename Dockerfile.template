@@ -22,11 +22,14 @@ COPY package*.json ./
 # # making sure to clean up the artifacts it creates in order to reduce the image size.
 RUN JOBS=MAX npm install --production --unsafe-perm && npm cache verify && rm -rf /tmp/*
 
+# /path/to/keyfile:/path/in/container
+
 EXPOSE 8555
 EXPOSE 8444
 
-# ENV keys="generate"
-ENV keys="/usr/src/ap/chia"
+ENV keys="generate"
+ENV ca="/usr/src/ap/chia/ca"
+ENV keys="copy"
 ENV harvester="true"
 ENV farmer="false"
 ENV plots_dir="/plots"
