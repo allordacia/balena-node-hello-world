@@ -7,11 +7,13 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-ubuntu-node:10.18-bionic-run
 # use `install_packages` if you need to install dependencies,
 # for instance if you need git, just uncomment the line below.
 RUN apt-get update
-RUN install_packages curl git jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3 nfs-common vim tzdata
+RUN install_packages curl git jq python3 ansible tar bash ca-certificates git openssl unzip wget python3-pip sudo acl build-essential python3 nfs-common vim tzdata cifs-utils
 # RUN install_packages apt
 
 # # Defines our working directory in container
 WORKDIR /usr/src/app
+CMD mkdir /usr/src/ap/chia
+CMD mount.cifs //192.168.1.157/chia /usr/src/ap/chia -o user=ubuntu,pass=6hkcGdVe
 
 # # Copies the package.json first for better cache on later pushes
 COPY package*.json ./
@@ -23,22 +25,23 @@ RUN JOBS=MAX npm install --production --unsafe-perm && npm cache verify && rm -r
 EXPOSE 8555
 EXPOSE 8444
 
-ENV keys="generate"
-ENV harvester="false"
+# ENV keys="generate"
+ENV keys="/usr/src/ap/chia"
+ENV harvester="true"
 ENV farmer="false"
 ENV plots_dir="/plots"
 ENV farmer_address="null"
 ENV farmer_port="null"
 ENV testnet="false"
 ENV full_node_port="null"
-ENV TZ="UTC"
+ENV TZ="America/New York"
 ARG BRANCH
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 RUN echo "cloning ${BRANCH}"
-RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
+CMD git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
 && cd chia-blockchain \
 && git submodule update --init mozilla-ca \
 && chmod +x install.sh \
