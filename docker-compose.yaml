@@ -1,7 +1,8 @@
 version: "2.1"
 volumes:
-    ca: "./ca:/ca"
-    plots_dir: "./plots:/plots"
+    # ca: "./ca:/ca"
+    # plots_dir: "./plots:/plots"
+    ca: {}
 services:
     chia:
         build:
