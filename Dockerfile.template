@@ -30,9 +30,9 @@ RUN JOBS=MAX npm install --production --unsafe-perm && npm cache verify && rm -r
 EXPOSE 8555
 EXPOSE 8444
 
-ENV plots_dir="/plots"
+# ENV plots_dir="/plots"
 ENV keys="copy"
-ENV ca="/ca"
+# ENV ca="/ca"
 # ENV keys="copy"
 ENV harvester="true"
 ENV farmer="false"
