@@ -2,7 +2,7 @@ version: "2.1"
 services:
     chia:
         # container_name: "chia_network"
-        context: ./
+        # context: ./
         dockerfile: ./Dockerfile.template
         # networks:
         #     - overlay
