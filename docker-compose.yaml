@@ -1,9 +1,12 @@
 version: "2.1"
+volumes:
+    ca: "./ca:/ca"
+    plots_dir: "./plots:/plots"
 services:
     chia:
-        # container_name: "chia_network"
-        # context: ./
-        dockerfile: ./Dockerfile.template
+        build:
+            context: ./
+            dockerfile: ./Dockerfile.template
         # networks:
         #     - overlay
         # extra_hosts: 

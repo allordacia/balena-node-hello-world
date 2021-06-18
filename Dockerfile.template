@@ -24,8 +24,8 @@ COPY package*.json ./
 # # making sure to clean up the artifacts it creates in order to reduce the image size.
 RUN JOBS=MAX npm install --production --unsafe-perm && npm cache verify && rm -rf /tmp/*
 
-VOLUME "./ca:/ca"
-VOLUME "./plots:/plots"
+# VOLUME "./ca:/ca"
+# VOLUME "./plots:/plots"
 
 EXPOSE 8555
 EXPOSE 8444
