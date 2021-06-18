@@ -3,8 +3,6 @@
 # and about balena base images here: https://www.balena.io/docs/reference/base-images/base-images/
 # FROM balenalib/%%BALENA_MACHINE_NAME%%-node:10-stretch-run
 FROM balenalib/%%BALENA_MACHINE_NAME%%-ubuntu-node:10.18-bionic-run
-# WORKDIR ./
-# BALENA_APP_NAME: "chia_harvester"
 
 # use `install_packages` if you need to install dependencies,
 # for instance if you need git, just uncomment the line below.
@@ -49,9 +47,9 @@ ARG BRANCH
 # RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-RUN echo "cloning ${BRANCH}"
+# RUN echo "cloning ${BRANCH}"
 # RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
-RUN git clone https://github.com/Chia-Network/chia-blockchain.git 
+RUN ["git", "clone", "https://github.com/Chia-Network/chia-blockchain.git"]
 RUN cd chia-blockchain 
 # RUN git submodule update --init mozilla-ca 
 RUN chmod +x install.sh 
