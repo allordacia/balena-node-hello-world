@@ -4,8 +4,8 @@ services:
         # container_name: "chia_network"
         context: ./
         dockerfile: /Dockerfile.template
-        networks:
-            - overlay
+        # networks:
+        #     - overlay
         # extra_hosts: 
         #     - ""
 
