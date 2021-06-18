@@ -51,7 +51,7 @@ RUN echo "cloning ${BRANCH}"
 # RUN git clone --branch ${BRANCH} https://github.com/Chia-Network/chia-blockchain.git \
 RUN git clone https://github.com/Chia-Network/chia-blockchain.git 
 RUN cd chia-blockchain 
-RUN git submodule update --init mozilla-ca 
+# RUN git submodule update --init mozilla-ca 
 RUN chmod +x install.sh 
 RUN /usr/bin/sh ./install.sh
 
