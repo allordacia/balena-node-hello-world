@@ -3,7 +3,7 @@ services:
     chia:
         # container_name: "chia_network"
         context: ./
-        dockerfile: /Dockerfile.template
+        dockerfile: ./Dockerfile.template
         # networks:
         #     - overlay
         # extra_hosts: 
