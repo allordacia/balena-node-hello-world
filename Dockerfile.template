@@ -32,8 +32,8 @@ EXPOSE 8444
 
 # ENV plots_dir="/plots"
 ENV keys="copy"
-# ENV ca="/ca"
-# ENV keys="copy"
+ENV ca="/ca"
+ENV keys="copy"
 ENV harvester="true"
 ENV farmer="false"
 ENV plots_dir="/plots"
