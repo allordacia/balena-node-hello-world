@@ -1,5 +1,5 @@
 version: "2.1"
-network_mode: host
+# network_mode: host
 # volumes:
 #     # ca: "./ca:/ca"
 #     # plots_dir: "./plots:/plots"
