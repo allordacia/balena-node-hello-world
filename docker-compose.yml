@@ -1,16 +1,16 @@
 version: "2.1"
 network_mode: host
-volumes:
-    # ca: "./ca:/ca"
-    # plots_dir: "./plots:/plots"
-    caDir:
+# volumes:
+#     # ca: "./ca:/ca"
+#     # plots_dir: "./plots:/plots"
+#     caDir:
 services:
     chia:
         build:
             context: ./
             dockerfile: ./Dockerfile.template
-            volumes:
-                - 'caDir:/ca'
+            # volumes:
+            #     - 'caDir:/ca'
             labels: 
                 io.balena.features.sysfs: '1'
         # networks:
